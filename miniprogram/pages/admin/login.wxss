@@ -1,0 +1,7 @@
+page { background: #f6f6f6; }
+.page { padding: 40rpx; }
+.card { background: #fff; border-radius: 16rpx; padding: 24rpx; box-shadow: 0 8rpx 20rpx rgba(0,0,0,.06); }
+.title { font-size: 32rpx; margin-bottom: 16rpx; }
+.input { background: #f7f7f9; padding: 16rpx; border-radius: 12rpx; margin-bottom: 16rpx; }
+.btn { background: #1677ff; color: #fff; }
+

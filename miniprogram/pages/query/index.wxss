@@ -1,0 +1,16 @@
+page { background: #f6f6f6; }
+.page { padding: 32rpx; display: flex; flex-direction: column; align-items: center; }
+.logo_wrapper { margin: 24rpx 0 32rpx 0; }
+.logo_circle { width: 200rpx; height: 200rpx; border: 2rpx dashed #999999; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #666666; overflow: hidden; }
+.logo_img { width: 100%; height: 100%; }
+
+.steps { width: 92%; padding: 20rpx; margin-bottom: 24rpx; }
+.steps_row { width: 100%; display: flex; align-items: center; justify-content: space-between; }
+.step_box { display: flex; flex-direction: column; align-items: center; width: 25%; }
+.dot { width: 20rpx; height: 20rpx; border-radius: 50%; background: #cccccc; }
+.dot.active { background: #1677ff; }
+.line { height: 2rpx; background: #dddddd; flex: 1; margin: 0 8rpx; }
+.step_label { margin-top: 8rpx; color: #666666; font-size: 24rpx; }
+
+.result_card { width: 92%; min-height: 260rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24rpx; text-align: center; }
+.result_text { color: #333333; font-size: 30rpx; }

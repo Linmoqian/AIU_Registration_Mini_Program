@@ -1,0 +1,18 @@
+<view class="chat_page">
+
+
+
+  <scroll-view class="chat_body" scroll-y scroll-with-animation scroll-into-view="{{toView}}">
+    <block wx:for="{{messages}}" wx:key="index">
+      <view id="msg-{{index}}" class="msg_item {{item.role}}">
+        <image wx:if="{{item.role==='assistant'}}" class="avatar" src="../../images/tab/聊天机器人.png"></image>
+        <view class="bubble">{{item.content}}</view>
+      </view>
+    </block>
+  </scroll-view>
+
+  <view class="chat_input_bar safe-bottom">
+    <input class="chat_input" focus placeholder="可以问我：报名、招新、部门介绍…" value="{{inputText}}" bindinput="onInput" confirm-type="send" bindconfirm="send"/>
+    <button class="send_btn" size="mini" loading="{{sending}}" bindtap="send">发送</button>
+  </view>
+</view>

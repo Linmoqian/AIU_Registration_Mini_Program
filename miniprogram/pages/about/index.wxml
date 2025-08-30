@@ -1,0 +1,27 @@
+<view class="page">
+
+  <view class="logo_wrapper" bindtap="onTapBadge">
+    <view class="logo_circle"><image class="logo_img" src="../../images/AIU会标.png" mode="aspectFit"></image></view>
+  </view>
+
+  <view class="chat_panel" wx:if="{{showChat}}">
+    <scroll-view class="chat_scroll" scroll-y> 
+      <block wx:for="{{messages}}" wx:key="index">
+        <view class="msg {{item.role}}">{{item.content}}</view>
+      </block>
+    </scroll-view>
+    <view class="chat_input_row">
+      <input class="chat_input" placeholder="向协会机器人提问" value="{{inputText}}" bindinput="onInput"/>
+      <button class="send_btn" size="mini" bindtap="send">发送</button>
+    </view>
+  </view>
+
+  <button class="link_btn" bindtap="openMp">协会公众号</button>
+  <view wx:if="{{showQR}}" class="oa_panel card shadow-sm" bindtap="previewQr">
+    <image class="qr_img" src="../../images/official_qr.svg" mode="widthFix"></image>
+    <view class="qr_tip">长按识别二维码，或点击放大查看</view>
+  </view>
+  <button class="link_btn" bindtap="openSite">协会网站</button>
+  <view class="support_text">www.scauaiu.xyz</view>
+  
+</view>

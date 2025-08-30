@@ -1,0 +1,13 @@
+{
+  "name": "aiu-miniapp-tools",
+  "private": true,
+  "scripts": {
+    "prepare:tab-icons": "node scripts/prepare-tab-icons.js",
+    "transparent:tab-icons": "node scripts/tab-chromakey.js"
+  },
+  "dependencies": {
+    "sharp": "^0.33.4",
+    "jimp": "^0.22.10"
+  }
+}
+

@@ -1,0 +1,22 @@
+<view class="page">
+  <view class="logo_wrapper">
+    <view class="logo_circle"><image class="logo_img" src="../../images/AIU会标.png" mode="aspectFit"></image></view>
+  </view>
+
+  <view class="steps card shadow-sm">
+    <view class="steps_row">
+      <block wx:for="{{stepList}}" wx:key="index">
+        <view class="step_box">
+          <view class="dot {{index<=statusOrderIndex?'active':''}}"></view>
+          <view class="step_label">{{item}}</view>
+        </view>
+        <view wx:if="{{index<stepList.length-1}}" class="line"></view>
+      </block>
+    </view>
+  </view>
+
+  <view class="result_card card shadow-sm">
+    <view class="result_text">{{resultText}}</view>
+    <button class="btn-ghost" size="mini" bindtap="queryMyStatus" style="margin-top:20rpx">刷新</button>
+  </view>
+</view>

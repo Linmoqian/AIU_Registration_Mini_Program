@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/about/index",
+    "pages/apply/index",
+    "pages/query/index",
+    "pages/chat/index",
+    "pages/admin/login",
+    "pages/admin/index"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "首页",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+  ,
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#1677ff",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/about/index",
+        "text": "协会",
+        "iconPath": "images/tab/了解协会.png",
+        "selectedIconPath": "images/tab/了解协会激活.png"
+      },
+      {
+        "pagePath": "pages/apply/index",
+        "text": "报名",
+        "iconPath": "images/tab/报名.png",
+        "selectedIconPath": "images/tab/报名激活.png"
+      },
+      {
+        "pagePath": "pages/query/index",
+        "text": "录取查询",
+        "iconPath": "images/tab/录取查询.png",
+        "selectedIconPath": "images/tab/录取查询激活.png"
+      },
+      {
+        "pagePath": "pages/chat/index",
+        "text": "AI助手",
+        "iconPath": "images/tab/聊天机器人.png",
+        "selectedIconPath": "images/tab/聊天机器人激活.png"
+      }
+    ]
+  }
+}

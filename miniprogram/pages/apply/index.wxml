@@ -1,0 +1,77 @@
+<view class="page">
+  <view class="avatar_box" bindtap="chooseAvatar">
+    <image class="avatar" src="{{form.avatarUrl || defaultAvatar}}" mode="aspectFill"></image>
+    <view class="avatar_tip">点击上传头像</view>
+  </view>
+
+  <view class="form">
+    <view class="form_item">
+      <text class="label required">姓名：</text>
+      <input class="input" placeholder="请输入" placeholder-class="ph" value="{{form.name}}" bindinput="onInput" data-field="name" maxlength="20" confirm-type="next"/>
+    </view>
+    <view class="form_item">
+      <text class="label required">手机号：</text>
+      <input class="input" type="number" placeholder="11位手机号" placeholder-class="ph" value="{{form.mobile}}" bindinput="onInput" data-field="mobile" maxlength="11" confirm-type="next"/>
+    </view>
+    <view class="form_item">
+      <text class="label">微信号：</text>
+      <input class="input" placeholder="请输入微信号" placeholder-class="ph" value="{{form.wechat}}" bindinput="onInput" data-field="wechat" maxlength="50" confirm-type="next"/>
+    </view>
+    <picker mode="date" value="{{form.birth}}" bindchange="onPickDate">
+  <view class="form_item">
+    <text class="label required">出生日期：</text>
+    <view class="picker">{{form.birth || '请选择日期'}}</view>
+  </view>
+</picker>
+    <picker mode="selector" range="{{genderOptions}}" value="{{genderIndex}}" bindchange="onPickGender">
+      <view class="form_item">
+        <text class="label required">性别：</text>
+        <view class="picker">{{form.gender || '请选择'}}</view>
+      </view>
+    </picker>
+    <view class="form_item">
+      <text class="label">政治面貌：</text>
+      <input class="input" placeholder="如 共青团员/群众" placeholder-class="ph" value="{{form.political}}" bindinput="onInput" data-field="political" maxlength="20" confirm-type="next"/>
+    </view>
+    <view class="form_item">
+      <text class="label required">学院：</text>
+      <input class="input" placeholder="请输入学院" placeholder-class="ph" value="{{form.college}}" bindinput="onInput" data-field="college" maxlength="40" confirm-type="next"/>
+    </view>
+    <view class="form_item">
+      <text class="label required">年级：</text>
+      <input class="input" placeholder="如 2023级" placeholder-class="ph" value="{{form.grade}}" bindinput="onInput" data-field="grade" maxlength="10" confirm-type="next"/>
+    </view>
+    <view class="form_item">
+      <text class="label">专业班级：</text>
+      <input class="input" placeholder="如 人工智能1班" placeholder-class="ph" value="{{form.majorClass}}" bindinput="onInput" data-field="majorClass" maxlength="40" confirm-type="next"/>
+    </view>
+    <picker mode="selector" range="{{deptOptions}}" value="{{deptIndex1}}" bindchange="onPickDept1">
+      <view class="form_item">
+        <text class="label required">第一志愿：</text>
+        <view class="picker">{{form.firstChoice || '请选择'}}</view>
+      </view>
+    </picker>
+    <picker mode="selector" range="{{deptOptions}}" value="{{deptIndex2}}" bindchange="onPickDept2">
+      <view class="form_item">
+        <text class="label">第二志愿：</text>
+        <view class="picker">{{form.secondChoice || '请选择'}}</view>
+      </view>
+    </picker>
+    <view class="form_item">
+      <text class="label">是否服从调剂：</text>
+      <switch checked="{{form.adjustable}}" bindchange="onToggleAdjust"/>
+    </view>
+    <view class="form_item textarea_item">
+      <text class="label">个人简介：</text>
+      <textarea class="textarea" placeholder="介绍一下自己，不超过1000字。" value="{{form.intro}}" bindinput="onInput" data-field="intro"/>
+    </view>
+    <view class="form_item">
+      <text class="label">其它：</text>
+      <textarea class="textarea" placeholder="备注信息" value="{{form.other}}" bindinput="onInput" data-field="other"/>
+    </view>
+  </view>
+
+  <view class="bottom_bar safe-bottom">
+    <button class="submit_btn btn-primary" bindtap="onSubmit" loading="{{submitting}}">提交</button>
+  </view>
+</view>

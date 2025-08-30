@@ -1,0 +1,56 @@
+/* 全局主题与基础样式 */
+page {
+  background-color: #f6f6f6;
+  color: #333333;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  border: 2rpx solid #e5e5e5;
+}
+
+.shadow-sm { box-shadow: 0 6rpx 16rpx rgba(0,0,0,0.04); }
+.shadow-md { box-shadow: 0 10rpx 24rpx rgba(0,0,0,0.08); }
+
+.btn-primary {
+  background-color: #1677ff;
+  color: #ffffff;
+  border-radius: 12rpx;
+}
+
+.btn-ghost {
+  background-color: #ffffff;
+  color: #333333;
+  border: 2rpx solid #e5e5e5;
+  border-radius: 12rpx;
+}
+
+.safe-bottom { padding-bottom: constant(safe-area-inset-bottom); padding-bottom: env(safe-area-inset-bottom); }
+/**app.wxss**/
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+} 
+
+button {
+  background: initial;
+}
+
+button:focus{
+  outline: 0;
+}
+
+button::after{
+  border: none;
+}
+
+
+page {
+  background: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}

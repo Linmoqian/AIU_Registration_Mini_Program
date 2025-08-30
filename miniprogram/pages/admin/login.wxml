@@ -1,0 +1,8 @@
+<view class="page">
+  <view class="card">
+    <view class="title">管理员验证</view>
+    <input class="input" password placeholder="输入密码" bindinput="onInput" value="{{pwd}}"/>
+    <button class="btn" bindtap="onSubmit">进入</button>
+  </view>
+</view>
+
