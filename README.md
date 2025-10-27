@@ -1,0 +1,2 @@
+# AIU_Registration_Mini_Program
+AIU报名小程序
