@@ -1,6 +1,5 @@
 Page({
   data: {
-    showQR: false,
     tapCount: 0,
     lastTapTs: 0,
   },
@@ -25,8 +24,11 @@ Page({
   // 点击会标触发彩蛋计数
   onTapBadge() { this.toggleChat(); },
 
-  openMp() {
-    this.setData({ showQR: !this.data.showQR });
+  // 公众号二维码改为常显，移除 openMp
+
+  previewQr() {
+    const url = '../../images/公众号二维码.jpg'.replace('/miniprogram','');
+    wx.previewImage({ urls: [url] });
   },
 
   openSite() {
@@ -38,5 +40,14 @@ Page({
       title: 'AIU 协会',
       path: '/pages/about/index'
     };
+  },
+
+  onTouchStart(e) { this.startX = e.changedTouches[0].clientX; },
+  onTouchEnd(e) {
+    const endX = e.changedTouches[0].clientX;
+    const delta = endX - (this.startX || 0);
+    if (Math.abs(delta) < 60) return;
+    if (delta < 0) wx.switchTab({ url: '/pages/apply/index' });
+    else wx.switchTab({ url: '/pages/chat/index' });
   }
 });

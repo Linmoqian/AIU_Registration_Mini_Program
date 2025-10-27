@@ -16,18 +16,20 @@ const getOpenId = async () => {
   };
 };
 
-// 获取小程序二维码
-const getMiniProgramCode = async () => {
-  // 获取小程序二维码的buffer
-  const resp = await cloud.openapi.wxacode.get({
-    path: "pages/about/index",
+// 获取小程序码（支持未发布版本）：getUnlimited + check_path=false，可指定 env_version
+const getMiniProgramCode = async (event = {}) => {
+  const page = event.page || "pages/about/index";
+  const scene = event.scene || "from=cloud";
+  const envVersion = event.envVersion || "trial"; // release | trial | develop
+  const resp = await cloud.openapi.wxacode.getUnlimited({
+    scene,
+    page,
+    check_path: false,
+    width: 430,
+    env_version: envVersion
   });
   const { buffer } = resp;
-  // 将图片上传云存储空间
-  const upload = await cloud.uploadFile({
-    cloudPath: "code.png",
-    fileContent: buffer,
-  });
+  const upload = await cloud.uploadFile({ cloudPath: "code.png", fileContent: buffer });
   return upload.fileID;
 };
 
@@ -223,6 +225,105 @@ const signupGetStatus = async () => {
   }
 };
 
+// 网站直连：按手机号写入/更新报名（不依赖 OPENID）
+const webSignupUpsert = async (event) => {
+  const form = (event && event.data) || {};
+  if (!form.name || !/^1\d{10}$/.test(form.mobile || '')) {
+    return { success: false, errMsg: '参数不合法' };
+  }
+  const col = db.collection('signup');
+  const writeOnce = async () => {
+    const exist = await col.where({ mobile: form.mobile }).limit(1).get();
+    if (exist.data && exist.data.length) {
+      await col.doc(exist.data[0]._id).update({ data: { ...form, updatedAt: db.serverDate() } });
+    } else {
+      await col.add({ data: { ...form, status: 'interview', createdAt: db.serverDate(), updatedAt: db.serverDate() } });
+    }
+  };
+  try {
+    await writeOnce();
+    return { success: true };
+  } catch (e) {
+    const msg = e?.errMsg || '';
+    if (msg.includes('DATABASE_COLLECTION_NOT_EXIST')) {
+      await createApplicationsCollection();
+      await writeOnce();
+      return { success: true };
+    }
+    return { success: false, errMsg: msg || '写入失败' };
+  }
+};
+
+// 网站直连：按手机号优先查询录取状态（先 admissions，后 signup）
+const webGetStatusByMobile = async (mobile) => {
+  if (!/^1\d{10}$/.test(mobile || '')) return { success: false, errMsg: '手机号不合法' };
+  try {
+    const adm = await db.collection('admissions').where({ mobile }).limit(1).get();
+    if (adm.data && adm.data.length) {
+      const a = adm.data[0];
+      return { success: true, data: { status: a.status || 'interview', department: a.department || '' } };
+    }
+    const sg = await db.collection('signup').where({ mobile }).limit(1).get();
+    if (sg.data && sg.data.length) {
+      const s = sg.data[0];
+      return { success: true, data: { status: s.status || 'interview', firstChoice: s.firstChoice || '' } };
+    }
+    return { success: true, data: null };
+  } catch (e) {
+    return { success: false, errMsg: e.errMsg || '查询失败' };
+  }
+};
+
+// ----- HTTP 接口封装（用于网站直连） -----
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type,Authorization'
+};
+
+const httpRes = (statusCode, payload) => ({
+  isBase64Encoded: false,
+  statusCode,
+  headers: { 'Content-Type': 'application/json; charset=utf-8', ...corsHeaders },
+  body: JSON.stringify(payload || {})
+});
+
+const parseJsonBody = (event) => {
+  try {
+    if (!event.body) return {};
+    return typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+  } catch {
+    return {};
+  }
+};
+
+const handleHttp = async (event) => {
+  if (event.httpMethod === 'OPTIONS') return httpRes(204, {});
+  const method = (event.httpMethod || '').toUpperCase();
+  const path = (event.path || '').toLowerCase();
+  const q = event.queryStringParameters || {};
+  // POST /api/signup  （网站报名/更新，按手机号）
+  if (method === 'POST' && path.endsWith('/api/signup')) {
+    const body = parseJsonBody(event);
+    const r = await webSignupUpsert({ data: body });
+    return httpRes(200, r);
+  }
+  // GET /api/status?mobile=xxx  （查询状态）
+  if (method === 'GET' && path.endsWith('/api/status')) {
+    const r = await webGetStatusByMobile(q.mobile);
+    return httpRes(200, r);
+  }
+  // POST /api/admissions  （管理员写入，沿用 adminUpsertAdmission）
+  if (method === 'POST' && path.endsWith('/api/admissions')) {
+    const body = parseJsonBody(event);
+    const auth = (event.headers && (event.headers.Authorization || event.headers.authorization)) || '';
+    if (auth.startsWith('Bearer ')) body.token = auth.slice(7);
+    const r = await adminUpsertAdmission(body);
+    return httpRes(200, r);
+  }
+  return httpRes(404, { success: false, errMsg: 'Not Found' });
+};
+
 // 管理员写入/更新录取决策（集合 admissions）
 // 授权方式：环境变量 ADMIN_OPENIDS（逗号分隔）或 ADMIN_TOKEN
 const adminUpsertAdmission = async (event) => {
@@ -298,11 +399,15 @@ const difyChat = async (event) => {
 // const genMpQrcode = require('./genMpQrcode/index');
 // 云函数入口函数
 exports.main = async (event, context) => {
+  // HTTP 入口（网站调用）
+  if (event && event.httpMethod) {
+    return await handleHttp(event);
+  }
   switch (event.type) {
     case "getOpenId":
       return await getOpenId();
     case "getMiniProgramCode":
-      return await getMiniProgramCode();
+      return await getMiniProgramCode(event);
     case "createCollection":
       return await createCollection();
     case "selectRecord":

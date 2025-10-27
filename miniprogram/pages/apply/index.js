@@ -28,6 +28,14 @@ Page({
       other: "",
     },
   },
+  onTouchStart(e) { this.startX = e.changedTouches[0].clientX; },
+  onTouchEnd(e) {
+    const endX = e.changedTouches[0].clientX;
+    const delta = endX - (this.startX || 0);
+    if (Math.abs(delta) < 60) return;
+    if (delta < 0) wx.switchTab({ url: '/pages/query/index' });
+    else wx.switchTab({ url: '/pages/about/index' });
+  },
 
   onInput(e) {
     const field = e.currentTarget.dataset.field;
@@ -157,32 +165,20 @@ Page({
       const openid = openidRes?.result?.openid || "";
 
       const upsert = async () => {
-        const db = wx.cloud.database();
-        const col = db.collection("signup");
-        const exist = await col.where({ openid }).get();
         const dataToSave = this.normalizeForm(this.data.form);
-        if (exist.data && exist.data.length) {
-          const docId = exist.data[0]._id;
-          await col.doc(docId).update({
-            data: { ...dataToSave, updatedAt: db.serverDate() }
-          });
-        } else {
-          await col.add({
-            data: { ...dataToSave, openid, status: "interview", createdAt: db.serverDate(), updatedAt: db.serverDate() }
-          });
+        const r = await wx.cloud.callFunction({
+          name: "quickstartFunctions",
+          data: { type: "signupSubmit", data: dataToSave }
+        });
+        if (!r || !r.result || r.result.success !== true) {
+          throw (r && r.result && r.result.errMsg) || "提交失败";
         }
       }
 
       try {
         await upsert();
       } catch (err) {
-        const msg = err?.errMsg || "";
-        if (msg.includes('DATABASE_COLLECTION_NOT_EXIST') || msg.includes('db not exist')) {
-          await wx.cloud.callFunction({ name: "quickstartFunctions", data: { type: "createApplications" } });
-          await upsert();
-        } else {
-          throw err;
-        }
+        throw err;
       }
 
       wx.showToast({ title: "提交成功" });

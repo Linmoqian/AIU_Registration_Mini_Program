@@ -1,4 +1,4 @@
-<view class="page">
+<view class="page" capture-bind:touchstart="onTouchStart" capture-bind:touchend="onTouchEnd">
 
   <view class="logo_wrapper" bindtap="onTapBadge">
     <view class="logo_circle"><image class="logo_img" src="../../images/AIU会标.png" mode="aspectFit"></image></view>
@@ -16,9 +16,9 @@
     </view>
   </view>
 
-  <button class="link_btn" bindtap="openMp">协会公众号</button>
-  <view wx:if="{{showQR}}" class="oa_panel card shadow-sm" bindtap="previewQr">
-    <image class="qr_img" src="../../images/official_qr.svg" mode="widthFix"></image>
+  <view class="oa_panel card shadow-sm">
+    <button class="link_btn" bindtap="openSite">协会公众号</button>
+    <image class="qr_img" src="../../images/公众号二维码.jpg" mode="widthFix" show-menu-by-longpress="true" bindtap="previewQr"></image>
     <view class="qr_tip">长按识别二维码，或点击放大查看</view>
   </view>
   <button class="link_btn" bindtap="openSite">协会网站</button>

@@ -1,5 +1,5 @@
 page { background: #f6f6f6; }
-.chat_page { display: flex; flex-direction: column; height: 100vh; }
+.chat_page { display: flex; flex-direction: column; min-height: 100vh; }
 .chat_header { display: none; }
 .title { font-size: 34rpx; font-weight: 600; }
 

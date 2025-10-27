@@ -1,4 +1,4 @@
-<view class="chat_page">
+<view class="chat_page" capture-bind:touchstart="onTouchStart" capture-bind:touchend="onTouchEnd">
 
 
 
@@ -12,7 +12,7 @@
   </scroll-view>
 
   <view class="chat_input_bar safe-bottom">
-    <input class="chat_input" focus placeholder="可以问我：报名、招新、部门介绍…" value="{{inputText}}" bindinput="onInput" confirm-type="send" bindconfirm="send"/>
+    <input class="chat_input" placeholder="可以问我：报名、招新、部门介绍…" value="{{inputText}}" bindinput="onInput" confirm-type="send" bindconfirm="send"/>
     <button class="send_btn" size="mini" loading="{{sending}}" bindtap="send">发送</button>
   </view>
 </view>

@@ -1,0 +1,6 @@
+page { background: #f6f6f6; }
+.page { padding: 24rpx; }
+.card { background: #fff; border-radius: 16rpx; padding: 20rpx; box-shadow: 0 8rpx 20rpx rgba(0,0,0,.06); }
+.row { margin: 10rpx 0; font-size: 28rpx; color: #333; }
+.label { color: #999; margin-right: 8rpx; }
+

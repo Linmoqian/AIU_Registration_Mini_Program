@@ -17,6 +17,15 @@ Page({
     this.setData({ inputText: e.detail.value });
   },
 
+  onTouchStart(e) { this.startX = e.changedTouches[0].clientX; },
+  onTouchEnd(e) {
+    const endX = e.changedTouches[0].clientX;
+    const delta = endX - (this.startX || 0);
+    if (Math.abs(delta) < 60) return;
+    if (delta > 0) wx.switchTab({ url: '/pages/query/index' });
+    else wx.switchTab({ url: '/pages/about/index' });
+  },
+
   scrollToBottom() {
     this.setData({ toView: `msg-${this.data.messages.length - 1}` });
   },

@@ -3,6 +3,8 @@
     <view class="title">管理员验证</view>
     <input class="input" password placeholder="输入密码" bindinput="onInput" value="{{pwd}}"/>
     <button class="btn" bindtap="onSubmit">进入</button>
+    <button bindtap="getCode">获取小程序码并预览</button>
+<image wx:if="{{codeFileId}}" src="{{codeFileId}}" mode="widthFix" />
   </view>
 </view>
 

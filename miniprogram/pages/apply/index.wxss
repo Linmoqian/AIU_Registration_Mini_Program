@@ -19,6 +19,7 @@ page { background: #f6f6f6; }
 
 .bottom_bar { position: fixed; left: 0; right: 0; bottom: 0; background: #ffffff; padding: 16rpx 24rpx; border-top: 1px solid #eee; }
 .submit_btn { width: 92%; margin: 0 auto; }
+.agree_tip { width: 92%; margin: 0 auto 16rpx auto; font-size: 24rpx; color: #8c8c8c; line-height: 1.6; text-align: center; }
 
 .gender_group { display: flex; gap: 40rpx; }
 .radio_item { display: flex; align-items: center; font-size: 28rpx; color: #333; }
